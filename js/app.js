@@ -3,12 +3,45 @@
  */
 
 
+
+// just dummy card stack I will change this in the final game
+let availableCards = ['leaf', 'anchor', 'cube', 'gamepad', 'headphones', 'glass', 'bomb', 'bolt',
+            'leaf', 'anchor', 'cube', 'gamepad', 'headphones', 'glass', 'bomb', 'bolt'];
+
+
+
+
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+
+ // Initializes
+
+ function init() {
+
+   //  shuffle the cards so that each time the game starts symbols
+   //  are in different places in the deck
+
+   let cards = shuffle(availableCards);
+
+   // $deck.empty();
+
+   match = 0;
+   moves = 0;
+
+   $('.moves').text('0');
+
+   $('i').removeClass('fa-star-o').addClass('fa-star');
+
+ 	for (let i = 0; i < cards.length; i++) {
+ 		$('.deck').append($('<li class="card"><i class="fa fa-' + cards[i] + '"></i></li>'))
+ 	}
+ 	 addCardListener();
+ };
+
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -36,3 +69,13 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+ function addCardListener() {
+   // Card flip
+   $('.deck').find('.card:not(".match, .open")').bind('click' , function() {
+     $(this).addClass('open show');
+   });
+ }
+
+
+ init();
