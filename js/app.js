@@ -12,6 +12,8 @@ let match = 0
 let numOfCards = 8   // This can be modified later to make the game harder
 let now
 let timeDiff
+let leastMoves = 999
+let leastSeconds = 999
 
 let startTime
 let seconds = 0
@@ -90,7 +92,6 @@ function shuffle(array) {
 
    if (flipped.length === 0) {
      $(this).addClass("show open");
-     // $(this).toggleClass("show open");//.animateCss('flipInY');
      flipped.push($(this));
      unClickable();
    }
@@ -98,7 +99,7 @@ function shuffle(array) {
    else if (flipped.length === 1) {
      // refresh moves
      refreshMoves();
-     $(this).toggleClass("show open");//.animateCss('flipInY');
+     $(this).toggleClass("show open");
      flipped.push($(this));
      setTimeout(checkMatch, 500);
    }
@@ -107,15 +108,15 @@ function shuffle(array) {
  // check openCards if they match or not
 function checkMatch() {
     if (flipped[0][0].firstChild.className == flipped[1][0].firstChild.className) {
-        flipped[0].addClass("match");//.animateCss('pulse');
-        flipped[1].addClass("match");//.animateCss('pulse');
+        flipped[0].addClass("match pulse");//.animateCss('pulse');
+        flipped[1].addClass("match pulse");//.animateCss('pulse');
         unClickable();
         flipped = [] // turn over the flipped cards
         setTimeout(checkWin, 700);   // wait for 1.4 secs to check if win
     }
     else {
-      flipped[0].toggleClass("show open");//.animateCss('flipInY');
-      flipped[1].toggleClass("show open");//.animateCss('flipInY');
+      flipped[0].toggleClass("show open");
+      flipped[1].toggleClass("show open");
       enableClick();
       flipped = []   // turn over the flipped cards
     }
@@ -181,11 +182,14 @@ function refreshStars(){
 
 // End Game -- sweet alerts is used
 function endGame() {
+  leaderboard();
 	swal({
 		allowEscapeKey: false,
 		allowOutsideClick: false,
 		title: 'Congratulations!',
-		text:  moves + ' Moves '+ stars + ' Stars ' + seconds + ' Seconds.',
+		text:  moves + ' Moves '+ stars + ' Stars ' + seconds + ' Seconds.'
+          + '\n Leaderboard: \n' + 'Least Moves: ' + leastMoves + ' moves \n'
+          + 'Least Time: ' + leastSeconds + ' seconds \n',
 		type: 'success',
 		confirmButtonText: 'Play again!'
 	}).then(function(isConfirm) {
@@ -210,6 +214,15 @@ $('.restart').on('click', function() {
     }
   })
 });
+
+function leaderboard(){
+  if(moves<leastMoves){
+    leastMoves = moves;
+  }
+  if(seconds<leastSeconds){
+    leastSeconds = seconds;
+  }
+}
 
 
 
