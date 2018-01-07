@@ -16,6 +16,7 @@ let leastMoves = 999
 let leastSeconds = 999
 let startTime
 let seconds = 0
+let isWon = false;
 
  // Initializes
 
@@ -24,6 +25,7 @@ let seconds = 0
    cardList = [];   // delete previous stack of cards
    layCards();
    $('.card').on('click', flipCard);
+   isWon = false;
    startTime = new Date();
 
 
@@ -105,12 +107,15 @@ function checkMatch() {
 }
 
 function refreshSeconds(){
-  now = new Date();
-  timeDiff = now - startTime;
-  seconds = Math.floor(timeDiff/1000);
+  if(!isWon){
+    now = new Date();
+    timeDiff = now - startTime;
+    seconds = Math.floor(timeDiff/1000);
 
-  $('.seconds').text(seconds);
-  setTimeout(refreshSeconds, 1000);
+    $('.seconds').text(seconds);
+    setTimeout(refreshSeconds, 1000);
+  }
+
 }
 
 // Make it unclickable
@@ -160,11 +165,11 @@ function refreshStars(){
     $('i').eq(0).removeClass('fa-star').addClass('fa-star-o');  // 1 star
     stars -= 1;
   }
-
 }
 
 // End Game -- sweet alerts is used
 function endGame() {
+  isWon = true;
   leaderboard();
 	swal({
 		allowEscapeKey: false,
@@ -209,8 +214,4 @@ function leaderboard(){
   }
 }
 
-
-
-
  init();
- // setTimeout(refreshSeconds, 1000);

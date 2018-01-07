@@ -3,18 +3,22 @@
 ## Table of Contents
 
 * [Instructions](#instructions)
-* [Contributing](#contributing)
+* [References](#references)
 
 ## Instructions
+This is a classic game where you match two tiles, and the aim is to finish whole stack by doing least moves. It requires good memory skill.
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+This game implementation counts the number of moves done by the user, seconds elapsed until the game started. It shows this information in a leaderboard when user wins a game. User can choose to reset the game any time.
 
-To get started, open `js/app.js` and start building out the app's functionality
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+## References
+During working on the project I have checked following sources;
 
-## Contributing
-
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
-
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+For alerts, sweetalert2 is used, it makes very easy to make alert boxes.  
+https://www.npmjs.com/package/sweetalert2  
+For timer, I have used the following code as a reference and implemented my own version  
+https://stackoverflow.com/questions/1210701/compute-elapsed-time  
+For animations, animate.css is used;  
+https://daneden.github.io/animate.css/  
+For getting game symbols from an array of symbols I used this forum entry;  
+https://stackoverflow.com/questions/36069870/how-to-remove-random-item-from-array-and-then-remove-it-from-array-untill-array  
