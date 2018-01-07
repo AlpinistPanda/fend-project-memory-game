@@ -1,15 +1,14 @@
-/*
- * Create a list that holds all of your cards
- */
 
+// A list of all available Cards, game chooses 8 from this list randomly
 
+let availableCards = ['leaf', 'anchor', 'cube', 'gamepad', 'headphones', 'glass', 'bomb',
+                      'bolt', 'futbol-o', 'binoculars'];
 
-// just dummy card stack I will change this in the final game
-let availableCards = ['leaf', 'anchor', 'cube', 'gamepad', 'headphones', 'glass', 'bomb', 'bolt',
-            'leaf', 'anchor', 'cube', 'gamepad', 'headphones', 'glass', 'bomb', 'bolt'];
-
-
-
+let flipped = [];   // flipped cards
+let moves = 0;
+let cardList = [];
+let match = 0
+let numOfCards = 8   // This can be modified later to make the game harder
 
 /*
  * Display the cards on the page
@@ -22,30 +21,35 @@ let availableCards = ['leaf', 'anchor', 'cube', 'gamepad', 'headphones', 'glass'
 
  function init() {
 
-   //  shuffle the cards so that each time the game starts symbols
-   //  are in different places in the deck
+   layCards();
+   $('.card').on('click', flipCard);
 
-   let cards = shuffle(availableCards);
 
-   // $deck.empty();
-
+   $('.moves').text('0');
    match = 0;
    moves = 0;
 
-   $('.moves').text('0');
-
-   $('i').removeClass('fa-star-o').addClass('fa-star');
-
- 	for (let i = 0; i < cards.length; i++) {
- 		$('.deck').append($('<li class="card"><i class="fa fa-' + cards[i] + '"></i></li>'))
- 	}
- 	 addCardListener();
+   $('i').removeClass('fa-star-o').addClass('fa-star');  // Add 3 stars
  };
 
+ // randomly take some icons from the list and add it to the stack
+
+function layCards() {
+  for (let i = 0; i < numOfCards; i++) {
+    let randomCard = availableCards.splice(availableCards.length * Math.random() | 0, 1)[0];
+    cardList.push(randomCard);    // push twice as we need pairs
+    cardList.push(randomCard);
+  }
+  cardList = shuffle(cardList);
+
+  for (let card of cardList){
+    $('.deck').append(`<li class="card animated"><i class="fa fa-${card}"></i></li>`);
+  }
+}
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -70,12 +74,86 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
- function addCardListener() {
-   // Card flip
-   $('.deck').find('.card:not(".match, .open")').bind('click' , function() {
-     $(this).addClass('open show');
-   });
+ // card functionality
+ function flipCard() {
+   if (flipped.length === 0) {
+     $(this).addClass("show open");
+     // $(this).toggleClass("show open");//.animateCss('flipInY');
+     flipped.push($(this));
+     unClickable();
+   }
+
+   else if (flipped.length === 1) {
+     // refresh moves
+     refreshMoves();
+     $(this).toggleClass("show open");//.animateCss('flipInY');
+     flipped.push($(this));
+     setTimeout(checkMatch, 1000);
+   }
  }
+
+ // check openCards if they match or not
+function checkMatch() {
+    if (flipped[0][0].firstChild.className == flipped[1][0].firstChild.className) {
+        flipped[0].addClass("match");//.animateCss('pulse');
+        flipped[1].addClass("match");//.animateCss('pulse');
+        unClickable();
+        flipped = [] // turn over the flipped cards
+        setTimeout(checkWin, 1400);   // wait for 1.4 secs to check if win
+    }
+    else {
+      flipped[0].toggleClass("show open");//.animateCss('flipInY');
+      flipped[1].toggleClass("show open");//.animateCss('flipInY');
+      enableClick();
+      flipped = []   // turn over the flipped cards
+    }
+}
+
+// Make it unclickable
+function unClickable() {
+  for (let card of flipped){
+        card.off('click');
+    }
+}
+
+// make it clickable
+function enableClick() {
+    flipped[0].on('click', flipCard);
+}
+
+function refreshMoves() {
+    moves += 1;
+    $('.moves').html(`${moves} `);
+    refreshStars();
+}
+
+// check whether the game is finished or not
+function checkWin() {
+    match_found += 1;
+    if (match_found == numOfCards) {
+        showResults();
+    }
+}
+
+// refreshes the stars shown in the game
+// moves less than 2 times number of cards 3 stars
+// moves less than 3 times number of cards 2 stars
+// moves less than 4 times number of cards 1 star
+function refreshStars(){
+
+  if (moves == 2 * numOfCards) {
+    $('i').eq(2).removeClass('fa-star').addClass('fa-star-o');  // 2star
+  }
+
+  if (moves == 3 * numOfCards) {
+    $('i').eq(1).removeClass('fa-star').addClass('fa-star-o');  // 1 star
+  }
+
+  if (moves == 4 * numOfCards) {
+    $('i').eq(0).removeClass('fa-star').addClass('fa-star-o');  // 1 star
+  }
+
+}
 
 
  init();
