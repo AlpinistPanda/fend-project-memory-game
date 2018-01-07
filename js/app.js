@@ -14,15 +14,8 @@ let now
 let timeDiff
 let leastMoves = 999
 let leastSeconds = 999
-
 let startTime
 let seconds = 0
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
 
  // Initializes
 
@@ -73,17 +66,6 @@ function shuffle(array) {
     return array;
 }
 
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
 
  // card functionality
  function flipCard() {
@@ -143,6 +125,7 @@ function enableClick() {
     flipped[0].on('click', flipCard);
 }
 
+// refresh the number of moves and show it in the scoreboard
 function refreshMoves() {
     moves += 1;
     $('.moves').html(`${moves} `);
@@ -199,7 +182,7 @@ function endGame() {
 	})
 }
 
-// Restart Game
+// Restart Game -- sweet alerts is used
 $('.restart').on('click', function() {
   swal({
     allowEscapeKey: false,
@@ -215,6 +198,8 @@ $('.restart').on('click', function() {
   })
 });
 
+// Updates the leaderboard for now there is no hard drive storage
+// so the scores are reset once the game is refreshed
 function leaderboard(){
   if(moves<leastMoves){
     leastMoves = moves;
