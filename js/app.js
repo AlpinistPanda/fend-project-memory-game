@@ -6,10 +6,15 @@ let availableCards = ['leaf', 'anchor', 'cube', 'gamepad', 'headphones', 'glass'
 
 let flipped = [];   // flipped cards
 let moves = 0;
+let stars = 0;
 let cardList = [];
 let match = 0
 let numOfCards = 8   // This can be modified later to make the game harder
+let now
+let timeDiff
 
+let startTime
+let seconds = 0
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -20,16 +25,20 @@ let numOfCards = 8   // This can be modified later to make the game harder
  // Initializes
 
  function init() {
-
+   $('.deck').empty();  // Delete previous game
+   cardList = [];   // delete previous stack of cards
    layCards();
    $('.card').on('click', flipCard);
+   startTime = new Date();
 
 
    $('.moves').text('0');
    match = 0;
    moves = 0;
+   seconds = 0;
 
    $('i').removeClass('fa-star-o').addClass('fa-star');  // Add 3 stars
+   stars = 3;
  };
 
  // randomly take some icons from the list and add it to the stack
@@ -76,6 +85,9 @@ function shuffle(array) {
 
  // card functionality
  function flipCard() {
+   refreshSeconds();
+
+
    if (flipped.length === 0) {
      $(this).addClass("show open");
      // $(this).toggleClass("show open");//.animateCss('flipInY');
@@ -88,7 +100,7 @@ function shuffle(array) {
      refreshMoves();
      $(this).toggleClass("show open");//.animateCss('flipInY');
      flipped.push($(this));
-     setTimeout(checkMatch, 1000);
+     setTimeout(checkMatch, 500);
    }
  }
 
@@ -99,7 +111,7 @@ function checkMatch() {
         flipped[1].addClass("match");//.animateCss('pulse');
         unClickable();
         flipped = [] // turn over the flipped cards
-        setTimeout(checkWin, 1400);   // wait for 1.4 secs to check if win
+        setTimeout(checkWin, 700);   // wait for 1.4 secs to check if win
     }
     else {
       flipped[0].toggleClass("show open");//.animateCss('flipInY');
@@ -107,6 +119,15 @@ function checkMatch() {
       enableClick();
       flipped = []   // turn over the flipped cards
     }
+}
+
+function refreshSeconds(){
+  now = new Date();
+  timeDiff = now - startTime;
+  seconds = Math.floor(timeDiff/1000);
+
+  $('.seconds').text(seconds);
+  setTimeout(refreshSeconds, 1000);
 }
 
 // Make it unclickable
@@ -129,9 +150,9 @@ function refreshMoves() {
 
 // check whether the game is finished or not
 function checkWin() {
-    match_found += 1;
-    if (match_found == numOfCards) {
-        showResults();
+    match += 1;
+    if (match == numOfCards) {
+        endGame();
     }
 }
 
@@ -143,17 +164,55 @@ function refreshStars(){
 
   if (moves == 2 * numOfCards) {
     $('i').eq(2).removeClass('fa-star').addClass('fa-star-o');  // 2star
+    stars -= 1;
   }
 
   if (moves == 3 * numOfCards) {
     $('i').eq(1).removeClass('fa-star').addClass('fa-star-o');  // 1 star
+    stars -= 1;
   }
 
   if (moves == 4 * numOfCards) {
     $('i').eq(0).removeClass('fa-star').addClass('fa-star-o');  // 1 star
+    stars -= 1;
   }
 
 }
 
+// End Game -- sweet alerts is used
+function endGame() {
+	swal({
+		allowEscapeKey: false,
+		allowOutsideClick: false,
+		title: 'Congratulations!',
+		text:  moves + ' Moves '+ stars + ' Stars ' + seconds + ' Seconds.',
+		type: 'success',
+		confirmButtonText: 'Play again!'
+	}).then(function(isConfirm) {
+		if (isConfirm) {
+			init();
+		}
+	})
+}
+
+// Restart Game
+$('.restart').on('click', function() {
+  swal({
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    title: 'Are you sure?',
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Restart Game!'
+  }).then(function(isConfirm) {
+    if (isConfirm) {
+      init();
+    }
+  })
+});
+
+
+
 
  init();
+ // setTimeout(refreshSeconds, 1000);
