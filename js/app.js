@@ -17,6 +17,7 @@ let leastSeconds = 999
 let startTime
 let seconds = 0
 let isWon = false;
+let isGameStarted = false;
 
  // Initializes
 
@@ -26,13 +27,15 @@ let isWon = false;
    layCards();
    $('.card').on('click', flipCard);
    isWon = false;
-   startTime = new Date();
+   isGameStarted = false;
+
 
 
    $('.moves').text('0');
    match = 0;
    moves = 0;
    seconds = 0;
+   $('.seconds').text(seconds);
 
    $('i').removeClass('fa-star-o').addClass('fa-star');  // Add 3 stars
    stars = 3;
@@ -69,8 +72,12 @@ function shuffle(array) {
 }
 
 
- // card functionality
+ // flips the card
  function flipCard() {
+   if(moves === 0 && isGameStarted === false){  // starts the timer
+     isGameStarted = true;
+     startTime = new Date();
+   }
    refreshSeconds();
 
 
