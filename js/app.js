@@ -168,10 +168,6 @@ function refreshStars(){
     stars -= 1;
   }
 
-  if (moves == 4 * numOfCards) {
-    $('i').eq(0).removeClass('fa-star').addClass('fa-star-o');  // 1 star
-    stars -= 1;
-  }
 }
 
 // End Game -- sweet alerts is used
