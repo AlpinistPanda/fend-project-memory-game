@@ -1,8 +1,8 @@
-
 // A list of all available Cards, game chooses 8 from this list randomly
 
 let availableCards = ['leaf', 'anchor', 'cube', 'gamepad', 'headphones', 'glass', 'bomb',
                       'bolt', 'futbol-o', 'binoculars'];
+
 
 let flipped = [];   // flipped cards
 let moves = 0;
@@ -22,6 +22,10 @@ let isGameStarted = false;
  // Initializes
 
  function init() {
+
+     availableCards = ['leaf', 'anchor', 'cube', 'gamepad', 'headphones', 'glass', 'bomb',
+                           'bolt', 'futbol-o', 'binoculars'];
+
    $('.deck').empty();  // Delete previous game
    cardList = [];   // delete previous stack of cards
    layCards();
@@ -29,15 +33,13 @@ let isGameStarted = false;
    isWon = false;
    isGameStarted = false;
 
-
-
    $('.moves').text('0');
    match = 0;
    moves = 0;
    seconds = 0;
    $('.seconds').text(seconds);
 
-   $('i').removeClass('fa-star-o').addClass('fa-star');  // Add 3 stars
+   $('.stars').removeClass('fa-star-o').addClass('fa-star');  // Add 3 stars
    stars = 3;
  };
 
@@ -159,12 +161,12 @@ function checkWin() {
 function refreshStars(){
 
   if (moves == 2 * numOfCards) {
-    $('i').eq(2).removeClass('fa-star').addClass('fa-star-o');  // 2star
+    $('.stars').eq(2).removeClass('fa-star').addClass('fa-star-o');  // 2star
     stars -= 1;
   }
 
   if (moves == 3 * numOfCards) {
-    $('i').eq(1).removeClass('fa-star').addClass('fa-star-o');  // 1 star
+    $('.stars').eq(1).removeClass('fa-star').addClass('fa-star-o');  // 1 star
     stars -= 1;
   }
 
