@@ -211,12 +211,11 @@ function checkWin() {
 /**
  * @description refreshes the stars shown in the game
  *  moves less than 2 times number of cards 3 stars
- *  moves less than 3 times number of cards 2 stars
+ *  moves less than 2 times number of cards plus 5 is 2 stars
  * @constructor
  */
 function refreshStars() {
   if (moves == 2 * numOfCards) {
-    alert("You have 2 stars");
     $(".stars")
       .children()
       .eq(2)
@@ -226,8 +225,8 @@ function refreshStars() {
     stars -= 1;
   }
 
-  if (moves == 3 * numOfCards) {
-    $(".i")
+  if (moves == (2 * numOfCards) + 5) {
+    $(".stars")
       .children()
       .eq(1)
       .children()
