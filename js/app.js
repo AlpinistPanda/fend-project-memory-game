@@ -33,7 +33,6 @@ let timer;
  * @constructor
  *
  */
-
 function init() {
   availableCards = [
     "leaf",
@@ -72,7 +71,6 @@ function init() {
  * @constructor
  *
  */
-
 function layCards() {
   for (let i = 0; i < numOfCards; i++) {
     let randomCard = availableCards.splice(
@@ -91,25 +89,32 @@ function layCards() {
   }
 }
 
-// Shuffle function from http://stackoverflow.com/a/2450976
-
-function shuffle(array) {
-  let currentIndex = array.length,
+/**
+ * @description Shuffle function from http://stackoverflow.com/a/2450976
+ * @constructor
+ * @param {array} cards - stack of cards
+ * @returns {array} cards - shuffled stack of cards
+ */
+function shuffle(cards) {
+  let currentIndex = cards.length,
     temporaryValue,
     randomIndex;
 
   while (currentIndex !== 0) {
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
+    temporaryValue = cards[currentIndex];
+    cards[currentIndex] = cards[randomIndex];
+    cards[randomIndex] = temporaryValue;
   }
 
-  return array;
+  return cards;
 }
 
-// flips the card
+/**
+ * @description flips card
+ * @constructor
+ */
 function flipCard() {
   if (!isGameStarted) {
     startTime = new Date();
@@ -130,7 +135,10 @@ function flipCard() {
   }
 }
 
-// check openCards if they match or not
+/**
+ * @description check openCards if they match or not
+ * @constructor
+ */
 function checkMatch() {
   if (
     flipped[0][0].firstChild.className == flipped[1][0].firstChild.className
@@ -148,6 +156,10 @@ function checkMatch() {
   }
 }
 
+/**
+ * @description refreshes seconds every second
+ * @constructor
+ */
 function refreshSeconds() {
   now = new Date();
   timeDiff = now - startTime;
@@ -157,26 +169,38 @@ function refreshSeconds() {
   timer = setTimeout(refreshSeconds, 1000);
 }
 
-// Make it unclickable
+/**
+ * @description makes card unclickable so that a user cannot pick the same card twice
+ * @constructor
+ */
 function unClickable() {
   for (let card of flipped) {
     card.off("click");
   }
 }
 
-// make it clickable
+/**
+ * @description make it clickable
+ * @constructor
+ */
 function enableClick() {
   flipped[0].on("click", flipCard);
 }
 
-// refresh the number of moves and show it in the scoreboard
+/**
+ * @description refresh the number of moves and show it in the scoreboard
+ * @constructor
+ */
 function refreshMoves() {
   moves += 1;
   $(".moves").html(`${moves} `);
   refreshStars();
 }
 
-// check whether the game is finished or not
+/**
+ * @description check whether the game is finished or not
+ * @constructor
+ */
 function checkWin() {
   match += 1;
   if (match == numOfCards) {
@@ -184,13 +208,19 @@ function checkWin() {
   }
 }
 
-// refreshes the stars shown in the game
-// moves less than 2 times number of cards 3 stars
-// moves less than 3 times number of cards 2 stars
+/**
+ * @description refreshes the stars shown in the game
+ *  moves less than 2 times number of cards 3 stars
+ *  moves less than 3 times number of cards 2 stars
+ * @constructor
+ */
 function refreshStars() {
   if (moves == 2 * numOfCards) {
-    $(".i")
+    alert("You have 2 stars");
+    $(".stars")
+      .children()
       .eq(2)
+      .children()
       .removeClass("fa-star")
       .addClass("fa-star-o"); // 2star
     stars -= 1;
@@ -198,14 +228,19 @@ function refreshStars() {
 
   if (moves == 3 * numOfCards) {
     $(".i")
+      .children()
       .eq(1)
+      .children()
       .removeClass("fa-star")
       .addClass("fa-star-o"); // 1 star
     stars -= 1;
   }
 }
 
-// End Game -- sweet alerts is used
+/**
+ * @description End Game -- sweet alerts is used
+ * @constructor
+ */
 function endGame() {
   clearTimeout(timer);
   leaderboard();
@@ -252,8 +287,11 @@ $(".restart").on("click", function() {
   });
 });
 
-// Updates the leaderboard for now there is no hard drive storage
-// so the scores are reset once the game is refreshed
+/**
+ * @description Updates the leaderboard for now there is no hard drive storage
+ * so the scores are reset once the game is refreshed
+ * @constructor
+ */
 function leaderboard() {
   if (moves < leastMoves) {
     leastMoves = moves;
