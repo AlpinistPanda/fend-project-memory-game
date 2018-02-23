@@ -26,6 +26,7 @@ let leastSeconds = 999;
 let startTime;
 let seconds = 0;
 let isGameStarted = false;
+let timer;
 
 /**
  * @description Initializes the game
@@ -153,7 +154,7 @@ function refreshSeconds() {
   seconds = Math.floor(timeDiff / 1000);
 
   $(".seconds").text(seconds);
-  setTimeout(refreshSeconds, 1000);
+  timer = setTimeout(refreshSeconds, 1000);
 }
 
 // Make it unclickable
@@ -206,6 +207,7 @@ function refreshStars() {
 
 // End Game -- sweet alerts is used
 function endGame() {
+  clearTimeout(timer);
   leaderboard();
   swal({
     allowEscapeKey: false,
