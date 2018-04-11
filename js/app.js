@@ -57,13 +57,15 @@ function init() {
   seconds = 0;
   $(".seconds").text(seconds);
 
-  $(".i")
+  $(".stars i")
     .removeClass("fa-star-o")
     .addClass("fa-star"); // Add 3 stars
   stars = 3;
 
   $(".card").on("click", flipCard);
   isGameStarted = false;
+
+  clearTimeout(timer);
 }
 
 /**
@@ -215,7 +217,7 @@ function checkWin() {
  * @constructor
  */
 function refreshStars() {
-  if (moves == 2 * numOfCards) {
+  if (moves === 2 * numOfCards) {
     $(".stars")
       .children()
       .eq(2)
